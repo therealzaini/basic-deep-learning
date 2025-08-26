@@ -15,6 +15,7 @@ such as matrix multiplication:
     print(A*B)
 
 The output should be:
+
 .. code-block:: bash
 
     matrix([[-10,3],[-13,4],[-3,2]])
