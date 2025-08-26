@@ -98,4 +98,8 @@ Output:
 
     The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.129617827686102.
 
+While the model is still not accurate, the error is pretty tolerable given the 
+restricted amount of data. Further more, the accuracy could be drastically improved
+by increasing the number of hidden layers, the neurons and epochs.
+At last, the learning rate can be tweaked for faster convergence as well.
 
