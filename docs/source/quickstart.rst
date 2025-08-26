@@ -12,7 +12,3 @@ such as matrix multiplication:
     B = Matrix([[3,-1],[-4,2],[2,1],[-1,0]])
 
     print(A*B)
-
-The output should be:
-.. code-block:: bash
-    matrix([[-10, 3], [-13, 4], [-3, 2]])
