@@ -145,6 +145,16 @@ class Matrix:
                   for i in range(1, self.format[0]+1)]
         return Matrix(matrix)
     
+    def __eq__(self, B):
+        """Overloads the == operator."""
+        if self.matrix == B.matrix:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return f"matrix({self.matrix})"
+    
     @classmethod
     def randomize(cls,
                   n: int,

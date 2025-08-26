@@ -29,19 +29,20 @@ class MultiLayerPerceptron:
             ]
         
     def forward_propagate(self, input_vector: Matrix):
-        """Feeds forward an input vector into the MLP. Returns the output of the MLP, and two lists of the respective 
-        recursive histories of the activations and the pre-activation vectors."""
+        """Feeds forward an input vector into the MLP."""
+        if input_vector.format[1] != 1:
+            raise ValueError("Input must be a column vector")
         activations = [input_vector]
-        pre_activations = [] #The Z vectors.
-        temp = input_vector
+        pre_activations = []
+        current_activation = input_vector
         for i, (W, B) in enumerate(zip(self.weights, self.biases)):
-            Z = W * temp + B
+            Z = W * current_activation + B
             pre_activations.append(Z)
             if i < len(self.weights) - 1:
-                temp = self.hidden_activation_function(Z)
+                current_activation = self.hidden_activation_function(Z)
             else:
-                temp = self.output_activation_function(Z)
-            activations.append(temp)
+                current_activation = self.output_activation_function(Z)
+            activations.append(current_activation)
         return activations[-1], (activations, pre_activations)
     
     def backward_propagate(self, input_vector: Matrix, expected_vector: Matrix, learning_rate: float = 0.1):
@@ -49,36 +50,32 @@ class MultiLayerPerceptron:
         _, (activations, pre_activations) = self.forward_propagate(input_vector)
         delta_w = [Matrix.zero(*W.format) for W in self.weights]
         delta_b = [Matrix.zero(*B.format) for B in self.biases]
-        
-        # Calculate output error
         output_error = (activations[-1] - expected_vector) @ self.output_activation_function_prime(pre_activations[-1])
         delta_b[-1] = output_error
         delta_w[-1] = output_error * activations[-2].T()
-        
         # Backpropagate through hidden layers
         error = output_error
         for i in range(len(self.weights)-2, -1, -1):
             error = (self.weights[i+1].T() * error) @ self.hidden_activation_function_prime(pre_activations[i])
             delta_b[i] = error
             delta_w[i] = error * activations[i].T()
-        
         # Update weights and biases
         for i in range(len(self.weights)):
             self.weights[i] = self.weights[i] - (learning_rate * delta_w[i])
             self.biases[i] = self.biases[i] - (learning_rate * delta_b[i])
     
     def get_mse_loss(self, data: list[tuple[Matrix, Matrix]]):
-        """Calculates the loss of the neural network using the mean squared error."""
+        """Calculates the mean squared error loss."""
         total_loss = 0
+        n_outputs = self.structure[-1]
+        
         for input_vector, expected_output in data:
             output, _ = self.forward_propagate(input_vector)
-            squared_error = Matrix.zero(output.format[0], output.format[1])
-            for i in range(1, output.format[0] + 1):
-                for j in range(1, output.format[1] + 1):
-                    error = output.get_entry(i, j) - expected_output.get_entry(i, j)
-                    squared_error.set_entry(error ** 2, i, j)
-            total_loss += sum(sum(row) for row in squared_error.matrix)
-        return total_loss / len(data)
+            error = output - expected_output
+            squared_error = error @ error  # Element-wise square
+            total_loss += sum(squared_error.get_column(1))  # Sum all squared errors
+        
+        return total_loss / (len(data) * n_outputs)
     
     def train(self, training_data: list[tuple[Matrix, Matrix]],
               testing_data: list[tuple[Matrix, Matrix]],
@@ -99,17 +96,17 @@ class MultiLayerPerceptron:
             train_losses.append(train_loss)
             test_losses.append(test_loss)
             print(f"Epoch {epoch+1}/{epochs} | Training Loss: {train_loss:.6f} | Testing Loss: {test_loss:.6f}")
-            if plot:
-                plt.figure(figsize=(10, 6))
-                plt.plot(train_losses, label='Train Loss')
-                plt.plot(test_losses, label='Test Loss')
-                plt.xlabel('Epochs')
-                plt.ylabel('Mean Squared Error')
-                plt.title('Training History')
-                plt.legend()
-                plt.grid(True)
-                plt.savefig('training_history.png')
-                plt.show()
+        if plot:
+            plt.figure(figsize=(10, 6))
+            plt.plot(train_losses, label='Train Loss')
+            plt.plot(test_losses, label='Test Loss')
+            plt.xlabel('Epochs')
+            plt.ylabel('Mean Squared Error')
+            plt.title('Training History')
+            plt.legend()
+            plt.grid(True)
+            plt.savefig('training_history.png')
+            plt.show()
         return train_losses, test_losses
     
     def save(self, filename:str):

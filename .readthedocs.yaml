@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-  - given-names: Diaa Eddine
-    family-names: ZAINI
-title: "Basic Deep Learning"
-version: 0.1.0
-doi: 10.5281/zenodo.16934656
-date-released: 2023-07-20

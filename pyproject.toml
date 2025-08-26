@@ -43,4 +43,4 @@ where = ["src"]
 [tool.setuptools.package-dir]
 basic_deep_learning = "src/basic_deep_learning"
 
-urls = {DOI = "https://doi.org/10.5281/zenodo.16934656"}
+urls = "https://doi.org/10.5281/zenodo.16934656"
