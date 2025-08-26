@@ -17,4 +17,4 @@ such as matrix multiplication:
 The output should be:
 .. code-block:: bash
 
-    matrix([[-10, 3], [-13, 4], [-3, 2]])
+    matrix([[-10,3],[-13,4],[-3,2]])
