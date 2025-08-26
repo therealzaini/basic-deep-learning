@@ -44,3 +44,7 @@ where = ["src"]
 basic_deep_learning = "src/basic_deep_learning"
 
 urls = "https://doi.org/10.5281/zenodo.16934656"
+
+extras_require={
+    'docs': ['sphinx_rtd_theme'],
+}
