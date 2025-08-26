@@ -20,11 +20,11 @@ The output should be:
 
     matrix([[-10,3],[-13,4],[-3,2]])
 
-Let us start by a classic example: a neural network
-that picks up on XOR gates patterns. 
-Even though a computer can deterministically 
-compute the output of an XOR operation, 
-it still serves as a good example to begin with.
+Let us start by the following example: 
+a neural network that picks up on linear patterns
+based on the first five terms and predicts the next one.
+In your directory, create a python file named 
+``training.py``:
 
 .. code-block:: python
     :name: training.py
@@ -67,3 +67,10 @@ it still serves as a good example to begin with.
     nn.train(train, test, 0.05, 100, True) #Trainin the model.
 
     nn.save("nn_test.json") #Saving the model.
+
+In your directory, you should be able to see 
+a ``nn_test.json`` file and a ``training_history.png``
+photo:
+
+.. image:: training_history.png
+
