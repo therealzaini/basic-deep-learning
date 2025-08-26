@@ -74,3 +74,28 @@ photo:
 
 .. image:: training_history.png
 
+We can now create a new python file named ``testing.py``
+in which we will laod the saved model and use it.
+
+.. code-block:: python
+    :name: testing.py
+    :caption: This file loads the model and uses it.
+
+    from basic_deep_learning import*
+
+    nn = MultiLayerPerceptron.load("nn_test.json")
+
+    def predict_next_term(seq):
+        normalized_input = (1/50)*Matrix([seq]).T()
+        normalized_output = nn.forward_propagate(normalized_input)[0].get_entry(1,1)
+        print(f"The model predicts that the next term of the sequence {seq} is {normalized_output * 50}.")
+
+    predict_next_term([1,2,3,4,5])
+
+Output:
+
+.. code-block:: bash
+
+    The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.129617827686102.
+
+
