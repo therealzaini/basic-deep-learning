@@ -1,7 +1,7 @@
 Quickstart
 ==================
 
-To make sure the pacakge is properly install,
+To make sure the pacakge is properly installed,
 we can start by performing a simple operation,
 such as matrix multiplication:
 
