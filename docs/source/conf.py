@@ -22,13 +22,27 @@ exclude_patterns = []
 
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 
-latex_elements = {
-    'preamble': r'''
-    \usepackage{amsmath}
-    \usepackage{amsfonts}
-    \usepackage{amssymb}
-    \usepackage{euler}
-    '''
+
+mathjax_config = {
+    'tex': {
+        'packages': {'[+]': ['base', 'ams', 'boldsymbol', 'euler']},
+        'inlineMath': [['$', '$'], ['\\(', '\\)']],
+        'displayMath': [['$$', '$$'], ['\\[', '\\]']],
+        'tags': 'ams'
+    },
+    'loader': {
+        'load': ['[tex]/ams', '[tex]/boldsymbol', '[tex]/euler']
+    },
+    'options': {
+        'renderActions': {
+            'addMenu': [0, '', '']
+        }
+    }
+}
+
+
+html_theme_options = {
+    'mathjax_config': mathjax_config
 }
 
 language = 'English'
