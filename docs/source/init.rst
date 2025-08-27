@@ -47,3 +47,25 @@ being the number of columns.
 
     [[1, 2, 3], [4, 5, 6]]
     (2, 3)
+
+The ``Matrix`` constructor accepts "uneven" matrix formats and automatically fills 
+the missing entries with zeros:
+
+.. code-block:: python
+
+    from basic_deep_learning import*
+
+    A = Matrix(
+        [
+            [1, 2, 3],
+            [4]
+        ]
+    )
+
+    print(A.matrix)
+    print(A.format)
+
+.. code-block:: bash
+
+    [[1, 2, 3], [4, 0, 0]]
+    (2, 3)
