@@ -11,4 +11,4 @@ The fundamental package that implements matrices.
    init
    getters_setters
    ops
-   rand
+   zero_rand
