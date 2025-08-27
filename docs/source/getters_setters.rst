@@ -22,3 +22,29 @@ starts at 1.
 .. code-block:: bash
 
     3
+
+We can also retrieve a row or column as a list:
+
+.. code-block:: python
+
+    print(A.get_row(2))
+    print(A.get_column(1))
+
+.. code-block:: bash
+
+    [4, 5, 6]
+    [1, 4]
+
+To modify a certain entry from the matrix, we can use the
+``set_entry(value, i, j)`` method:
+
+
+.. code-block:: python
+
+    A.set_entry(-1, 2, 2)   #Set the a_{2,2} entry to -1
+    print(A)
+
+.. code-block:: bash
+
+    matrix([[1, 2, 3], [4, -1, 6]])
+
