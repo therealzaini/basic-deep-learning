@@ -11,10 +11,10 @@ instances.
     A = Matrix([[1, 2, -4], [2, 0, 1]])
     B = Matrix([[6, -1, 3], [2, 1, 0]])
 
-    print(A+B)  #Addition
-    print(A-B)  #Substraction
-    print(A@B)  #Component-wise multiplication
-    print(3*A)  #Scaling
+    print(A + B)  #Addition
+    print(A - B)  #Substraction
+    print(A @ B)  #Component-wise multiplication
+    print(3 * A)  #Scaling
 
 .. code-block:: bash
 
