@@ -13,7 +13,7 @@ Basic Deep Learning
    :maxdepth: 2
    :caption: Functionalities
    
-   Matrix
+   matrix
    Activation Functions Registry
 
 .. toctree::
