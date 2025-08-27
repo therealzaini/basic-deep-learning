@@ -48,3 +48,17 @@ But ``print(B*A)`` yields:
 
     ValueError: Invalid matrix formats (4≠2).
 
+The ``T()`` method takes no arguments and simply returns the tranposed 
+matrix.
+
+.. code-block:: python
+
+    print(A.T())
+
+.. code-block:: bash
+
+    matrix([[1, 2], [2, 0], [-4, 1]])
+
+Finally, we can use the ``==`` operator between ``Matrix`` 
+instances; ``A == B`` is ``True`` if, and only if 
+their ``matrix`` attributes are equal.
