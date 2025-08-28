@@ -48,6 +48,13 @@ But ``print(B*A)`` yields:
 
     ValueError: Invalid matrix formats (4≠2).
 
+
+Definition:
+
+.. code-block:: python
+
+    T() -> Self
+
 The ``T()`` method takes no arguments and simply returns the tranposed 
 matrix.
 
