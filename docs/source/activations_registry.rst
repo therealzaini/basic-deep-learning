@@ -46,3 +46,38 @@ For example,
 
 The keys for the activation functions are respectively ``'sigmoid'``, ``'ReLU'``,
 ``'linear'`` and ``'tanh'``.
+
+These activation functions can take as parameters integers, floatiing-point values,
+lists and ever ``Matrix`` instances; the return type is the same as the input
+where it is computed component-wise for higher order data structures.
+
+.. code-block:: python
+
+    from basic_deep_learning import*
+    from basic_deep_learning import ActivationFunctionsRegistry as afr
+
+    tanh = afr.Activations['tanh'][0]
+
+    z = 2
+    v = [-1, 0, 1]
+    M = Matrix([[1, 2, 3],[0, 1, -2]])
+
+    print(tanh(z))
+    print(tanh(v))
+    print(tanh(M))
+
+.. code-block:: bash
+
+    0.9640275800758169
+    [-0.7615941559557649, 0.0, 0.7615941559557649]
+    matrix([[0.7615941559557649, 0.9640275800758169, 0.9950547536867305], [0.0, 0.7615941559557649, -0.9640275800758169]])
+
+The registry contains as well the softmax function that turns a 
+column vector into a probability distribution. More formally, 
+if :math:`X = \begin{pmatrix}x_1\\x_2\\ \vdots\\x_n\end{pmatrix}`
+is a column matrix, then :math:`\mathrm{softmax}(X) = \begin{pmatrix} y_1\\ y_2 \\ \vdots \\ y_n\end{pmatrix}`
+where 
+.. math::
+    \forall i \in \llbracket 1,n \rrbracket, \quad y_i = \displaystyle\frac{e^{x_i}}{\displaystyle\sum_{k=1}^n e^{x_i}}.
+
+For example,
