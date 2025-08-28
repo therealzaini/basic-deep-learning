@@ -4,7 +4,7 @@ from ..miscellaneous.linear_algebra import LinearAlgebraUtils
 
 class Matrix:
     def __init__(self,
-                matrix: list[list[float]]):
+                matrix: list[list[int|float]]):
         """Implementation of matrices as a list of lists; each inner list representing a row.
         
         Example: The following matrix M=

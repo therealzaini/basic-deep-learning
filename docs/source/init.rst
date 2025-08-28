@@ -1,6 +1,12 @@
 Initialisation
 --------------
 
+Definition:
+
+.. code-block:: python
+
+    class Matrix(matrix: list[list[int|float]]) -> Matrix
+
 We pass to the ``Matrix`` class constructor a list of rows (as lists) of a given matrix.
 For example, the matrix :math:`M = \begin{pmatrix} 1 & 0 \\ 0 & 1\end{pmatrix}`
 will be implemented as such:
