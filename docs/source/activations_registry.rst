@@ -79,6 +79,22 @@ is a column matrix, then :math:`\mathrm{softmax}(X) = \begin{pmatrix} y_1\\ y_2 
 where 
 
 .. math::
-   \forall i \in [1, n], \quad y_i = \frac{e^{x_i}}{\sum_{k=1}^n e^{x_k}}
+   \forall i \in [1, n], \quad y_i = \displaystyle\frac{e^{x_i}}{\displaystyle\sum_{k=1}^n e^{x_k}}
 
 For example,
+
+.. code-block:: python
+
+    from basic_deep_learning import*
+    from basic_deep_learning import ActivationFunctionsRegistry as afr
+
+    M = Matrix([[-5],[4],[2.3],[-2],[3],[4],[7]])
+
+    print(afr.softmax(M))
+
+.. code-block:: bash
+
+    matrix([[5.451275599280189e-06], [0.04417214369331117], [0.00806952287485786], [0.00010949179732781423], [0.01625002353723996], [0.04417214369331117], [0.8872212231283527]])
+
+If the matrix passed is not a column vector _ie_ its format can not be written as ``(n,1)``,
+a ``ValueError`` is raised.
