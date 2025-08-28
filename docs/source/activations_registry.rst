@@ -77,6 +77,7 @@ column vector into a probability distribution. More formally,
 if :math:`X = \begin{pmatrix}x_1\\x_2\\ \vdots\\x_n\end{pmatrix}`
 is a column matrix, then :math:`\mathrm{softmax}(X) = \begin{pmatrix} y_1\\ y_2 \\ \vdots \\ y_n\end{pmatrix}`
 where 
+
 .. math::
    \forall i \in [1, n], \quad y_i = \frac{e^{x_i}}{\sum_{k=1}^n e^{x_k}}
 
