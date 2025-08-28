@@ -96,5 +96,5 @@ For example,
 
     matrix([[5.451275599280189e-06], [0.04417214369331117], [0.00806952287485786], [0.00010949179732781423], [0.01625002353723996], [0.04417214369331117], [0.8872212231283527]])
 
-If the matrix passed is not a column vector _ie_ its format can not be written as ``(n,1)``,
+If the matrix passed is not a column vector *ie* its format can not be written as ``(n,1)``,
 a ``ValueError`` is raised.
