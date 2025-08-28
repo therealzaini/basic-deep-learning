@@ -78,6 +78,6 @@ if :math:`X = \begin{pmatrix}x_1\\x_2\\ \vdots\\x_n\end{pmatrix}`
 is a column matrix, then :math:`\mathrm{softmax}(X) = \begin{pmatrix} y_1\\ y_2 \\ \vdots \\ y_n\end{pmatrix}`
 where 
 .. math::
-    \forall i \in \llbracket 1,n \rrbracket, \quad y_i = \displaystyle\frac{e^{x_i}}{\displaystyle\sum_{k=1}^n e^{x_i}}.
+    \forall i \in \left\{1,2,\cdots,n\right\}, \quad y_i = \displaystyle\frac{e^{x_i}}{\displaystyle\sum_{k=1}^n e^{x_i}}.
 
 For example,
