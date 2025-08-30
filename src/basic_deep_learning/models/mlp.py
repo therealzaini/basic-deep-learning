@@ -4,6 +4,15 @@ import matplotlib.pyplot as plt
 import json
 from ..functionality.matrix import Matrix
 from ..functionality.activations_registry import ActivationFunctionsRegistry
+import time
+from datetime import datetime
+import os
+
+def time_format(seconds: float):
+    floor_secs = int(seconds)
+    h, s = divmod(floor_secs, 3600)
+    m, sec = divmod(s, 60)
+    return f'{h:02d} h : {m:02d} m : {sec:02d} s : {int((seconds-floor_secs)*1000)} ms'
 
 
 class MultiLayerPerceptron:
@@ -48,21 +57,19 @@ class MultiLayerPerceptron:
     def backward_propagate(self, input_vector: Matrix, expected_vector: Matrix, learning_rate: float = 0.1):
         """Updates the weights and biases based on one input and its expected output."""
         _, (activations, pre_activations) = self.forward_propagate(input_vector)
-        delta_w = [Matrix.zero(*W.format) for W in self.weights]
-        delta_b = [Matrix.zero(*B.format) for B in self.biases]
+        grad_w = [Matrix.zero(*W.format) for W in self.weights]
+        grad_b = [Matrix.zero(*B.format) for B in self.biases]
         output_error = (activations[-1] - expected_vector) @ self.output_activation_function_prime(pre_activations[-1])
-        delta_b[-1] = output_error
-        delta_w[-1] = output_error * activations[-2].T()
-        # Backpropagate through hidden layers
+        grad_b[-1] = output_error
+        grad_w[-1] = output_error * activations[-2].T()
         error = output_error
-        for i in range(len(self.weights)-2, -1, -1):
-            error = (self.weights[i+1].T() * error) @ self.hidden_activation_function_prime(pre_activations[i])
-            delta_b[i] = error
-            delta_w[i] = error * activations[i].T()
-        # Update weights and biases
+        for layer_idx in range(len(self.weights)-2, -1, -1):
+            error = (self.weights[layer_idx+1].T() * error) @ self.hidden_activation_function_prime(pre_activations[layer_idx])
+            grad_b[layer_idx] = error
+            grad_w[layer_idx] = error * activations[layer_idx].T()
         for i in range(len(self.weights)):
-            self.weights[i] = self.weights[i] - (learning_rate * delta_w[i])
-            self.biases[i] = self.biases[i] - (learning_rate * delta_b[i])
+            self.weights[i] = self.weights[i] - (learning_rate * grad_w[i])
+            self.biases[i] = self.biases[i] - (learning_rate * grad_b[i])
     
     def get_mse_loss(self, data: list[tuple[Matrix, Matrix]]):
         """Calculates the mean squared error loss."""
@@ -77,6 +84,9 @@ class MultiLayerPerceptron:
         
         return total_loss / (len(data) * n_outputs)
     
+    def __make_dir(self):
+        os.makedirs('cache', exist_ok = True)
+    
     def train(self, training_data: list[tuple[Matrix, Matrix]],
               testing_data: list[tuple[Matrix, Matrix]],
               learning_rate: float = 0.1,
@@ -86,16 +96,34 @@ class MultiLayerPerceptron:
         Outputs the MSE loss of each. If "True" is passed to the plot parameter,
         a plot of the evolution  of train losses and test losses will be be displayed and saved 
         in your directory."""
+        self.__make_dir()
         train_losses = []
         test_losses = []
+        start_date = datetime.now()
+        start_time = time.perf_counter()
         for epoch in range(epochs):
+            current_lr = learning_rate * (0.95 ** epoch)  # Exponential decay
             for input_vector, expected_output in training_data:
-                self.backward_propagate(input_vector, expected_output, learning_rate)
+                self.backward_propagate(input_vector, expected_output, current_lr)
             train_loss = self.get_mse_loss(training_data)
             test_loss = self.get_mse_loss(testing_data)
             train_losses.append(train_loss)
             test_losses.append(test_loss)
             print(f"Epoch {epoch+1}/{epochs} | Training Loss: {train_loss:.6f} | Testing Loss: {test_loss:.6f}")
+        end_date = datetime.now()
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        with open(f'cache/training_info.txt', 'w') as f:
+            f.write(f'Epochs: {epochs}.\n')
+            f.write(f'Learning rate: {learning_rate}.\n')
+            f.write(f'Data size: {len(training_data)+len(testing_data)}. Including:\n \n')
+            f.write(f'   Training data size: {len(training_data)}.\n')
+            f.write(f'   Testing data size: {len(testing_data)}.\n \n')
+            f.write(f'Training start date: {start_date}.\n')
+            f.write(f'Training end date: {end_date}.\n')
+            f.write(f'Trained in: {time_format(elapsed_time)}.\n')
+            f.write(f'Last train loss: {train_losses[-1]}.\n')
+            f.write(f'Last test loss: {test_losses[-1]}.')
         if plot:
             plt.figure(figsize=(10, 6))
             plt.plot(train_losses, label='Train Loss')
@@ -105,11 +133,12 @@ class MultiLayerPerceptron:
             plt.title('Training History')
             plt.legend()
             plt.grid(True)
-            plt.savefig('training_history.png')
+            plt.savefig(f'cache/training_history.png')
             plt.show()
         return train_losses, test_losses
     
     def save(self, filename:str):
+        self.__make_dir()
         """Save model to JSON file"""
         data = {
             'structure': self.structure,
@@ -118,7 +147,7 @@ class MultiLayerPerceptron:
             'weights': [W.matrix for W in self.weights],
             'biases': [B.matrix for B in self.biases]
         }
-        with open(filename, 'w') as f:
+        with open(f'cache/{filename}', 'w') as f:
             json.dump(data, f)
 
     @classmethod

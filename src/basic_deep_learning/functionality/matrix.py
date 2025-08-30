@@ -17,20 +17,21 @@ class Matrix:
         
         If the user passes to the matrix argument a list of uneven rows, the constructor automatically fills the empty places with 0's."""
         if not matrix:
-            raise ValueError("Cannot pass an empty matrix.")
+            raise TypeError("Cannot pass an empty matrix.")
         pmax = max(len(matrix[i]) for i in range(len(matrix)))
         if pmax < 1:
-            raise ValueError("Cannot pass an empty matrix.")   
+            raise TypeError("Cannot pass an empty matrix.")   
         self.format = (len(matrix), pmax) #The format of the matrix in the form of a (number of rows, numbers of columns) tuple.
         self.matrix = [row + [0] * (pmax - len(row)) for row in matrix] #The list of lists representing the matrix, where the empty spaces are filled with 0's.
 
     def __validate_indices(self,
                            i: int|None = None,
                            j: int|None = None) -> None: #Private method.
+        """If at least one index is passesd, the method will raise an error if that index is within the appropriate range."""
         if i is not None and i not in range(1,self.format[0]+1):
-            raise ValueError(f"Index {i} is out of the expected range [1,{self.format[0]}].")
+            raise IndexError(f"Index {i} is out of the expected range [1,{self.format[0]}].")
         if j is not None and j not in range(1,self.format[1]+1):
-            raise ValueError(f"Index {j} is out of the expected range [1,{self.format[1]}].")
+            raise IndexError(f"Index {j} is out of the expected range [1,{self.format[1]}].")
     
     def get_entry(self,
                   i: int,
@@ -94,7 +95,7 @@ class Matrix:
         
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
-            raise ValueError("Cannot add two matrices of different formats.")
+            raise TypeError("Cannot add two matrices of different formats.")
         matrix = [[self.get_entry(i, j) + B.get_entry(i, j) for j in range(1, self.format[1]+1)]
                   for i in range(1, self.format[0]+1)]
         return Matrix(matrix)
@@ -106,7 +107,7 @@ class Matrix:
         
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
-            raise ValueError("Cannot add two matrices of different formats.")
+            raise TypeError("Cannot add two matrices of different formats.")
         matrix = [[self.get_entry(i, j) - B.get_entry(i, j) for j in range(1, self.format[1]+1)]
                   for i in range(1, self.format[0]+1)]
         return Matrix(matrix)
@@ -118,7 +119,7 @@ class Matrix:
         
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
-            raise ValueError("Cannot add two matrices of different formats.")
+            raise TypeError("Cannot add two matrices of different formats.")
         matrix = [[self.get_entry(i, j) * B.get_entry(i, j) for j in range(1, self.format[1]+1)]
                   for i in range(1, self.format[0]+1)]
         return Matrix(matrix)
@@ -130,7 +131,7 @@ class Matrix:
         
         Raises an error if the number of columns of the first does not match the number of rows of the second."""
         if self.format[1] != B.format[0]:
-            raise ValueError(f"Invalid matrix formats ({self.format[1]}≠{B.format[0]}).")
+            raise TypeError(f"Invalid matrix formats ({self.format[1]}≠{B.format[0]}).")
         matrix = [
             [
                 LinearAlgebraUtils.dot(self.get_row(i+1), B.get_column(j+1)) for j in range(B.format[1])
@@ -146,6 +147,12 @@ class Matrix:
                   for i in range(1, self.format[0]+1)]
         return Matrix(matrix)
     
+    def __truediv__(self, scalar):
+        # Add element-wise division by scalar
+        if not isinstance(scalar, (int, float)):
+            raise TypeError("Can only divide by scalar")
+        return Matrix([[x/scalar for x in row] for row in self.matrix])
+    
     def __eq__(self, B: Self) -> bool:
         """Overloads the == operator."""
         if self.matrix == B.matrix:
@@ -154,7 +161,12 @@ class Matrix:
             return False
 
     def __str__(self) -> str:
-        return f"matrix({self.matrix})"
+        n = self.format[0]
+        s = ''
+        for i in range(n-1):
+            s += f'\t{self.matrix[i]},\n'
+        s += f'\t{self.matrix[n-1]}'
+        return f'matrix([\n{s}\n])'
     
     @classmethod
     def randomize(cls,
