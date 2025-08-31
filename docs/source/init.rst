@@ -29,7 +29,10 @@ Use ``print()`` to display the matrix.
 
 .. code-block:: bash
 
-    matrix([[1, 0], [0, 1]])
+    matrix([
+            [1, 0],
+            [0, 1]
+    ])
 
 Each ``Matrix`` instance has two attributes; ``format`` and ``matrix``.
 The ``format`` is a tuple of two elements, the first being the number of rows and the latter 
@@ -68,10 +71,15 @@ the missing entries with zeros:
         ]
     )
 
+    print(A)
     print(A.matrix)
     print(A.format)
 
 .. code-block:: bash
 
+    matrix([
+            [1, 2, 3],
+            [4, 0, 0]
+    ])
     [[1, 2, 3], [4, 0, 0]]
     (2, 3)
