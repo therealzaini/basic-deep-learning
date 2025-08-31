@@ -110,7 +110,7 @@ class Matrix:
         
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
-            raise TypeError("Cannot add two matrices of different formats.")
+            raise TypeError("Cannot subtraact two matrices of different formats.")
         A_cpp = matrix_ops.Matrix(self.matrix)
         B_cpp = matrix_ops.Matrix(B.matrix)  # Changed from B.format to B.matrix
         minusB_cpp = matrix_ops.Matrix.scale(B_cpp, -1)
@@ -125,7 +125,7 @@ class Matrix:
         
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
-            raise TypeError("Cannot add two matrices of different formats.")
+            raise TypeError("Cannot multiply component-wise two matrices of different formats.")
         A_cpp = matrix_ops.Matrix(self.matrix)
         B_cpp = matrix_ops.Matrix(B.matrix)
         C_cpp = matrix_ops.Matrix.cwise_prod(A_cpp, B_cpp)

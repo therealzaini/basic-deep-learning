@@ -41,7 +41,7 @@ instances.
     ])
 
 Performing an addition, substraction or component-wise multiplication
-between two matrices who do not have the same format will raise a ``ValueError``.
+between two matrices who do not have the same format will raise a ``TypeError``.
 
 Once the number of columns of the first matrix is equal to the number of rows 
 of the second, we can perform matrix multiplication.
@@ -62,7 +62,7 @@ of the second, we can perform matrix multiplication.
             [-1.0, 2.0, 1.0, 4.0]
     ])
 
-But ``print(B*A)`` yields:
+But ``print(B * A)`` yields:
 
 .. code-block:: bash
 
