@@ -101,8 +101,8 @@ and a ``training_info.txt`` file.
     Learning rate: 0.05.
     Data size: 2000. Including:
     
-        Training data size: 1600.
-        Testing data size: 400.
+       Training data size: 1600.
+       Testing data size: 400.
     
     Training start date: 2025-08-31 22:27:30.774909.
     Training end date: 2025-08-31 22:29:19.166712.
