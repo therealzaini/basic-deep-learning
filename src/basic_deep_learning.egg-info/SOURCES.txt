@@ -11,6 +11,7 @@ src/basic_deep_learning.egg-info/top_level.txt
 src/basic_deep_learning/functionality/__init__.py
 src/basic_deep_learning/functionality/activations_registry.py
 src/basic_deep_learning/functionality/matrix.py
+src/basic_deep_learning/functionality/setup.py
 src/basic_deep_learning/miscellaneous/__init__.py
 src/basic_deep_learning/miscellaneous/decorators.py
 src/basic_deep_learning/miscellaneous/linear_algebra.py

@@ -2,6 +2,7 @@
 from typing import Self
 import random
 from ..miscellaneous.linear_algebra import LinearAlgebraUtils
+from . import matrix_ops
 
 class Matrix:
     def __init__(self,
@@ -96,10 +97,12 @@ class Matrix:
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
             raise TypeError("Cannot add two matrices of different formats.")
-        matrix = [[self.get_entry(i, j) + B.get_entry(i, j) for j in range(1, self.format[1]+1)]
-                  for i in range(1, self.format[0]+1)]
-        return Matrix(matrix)
-    
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        B_cpp = matrix_ops.Matrix(B.matrix)  # Changed from B.format to B.matrix
+        C_cpp = matrix_ops.Matrix.sum(A_cpp, B_cpp)
+
+        return Matrix(C_cpp.get_matrix())
+
     def __sub__(self, B: Self) -> Self:
         """Overloads the - operator to Matrix objects.
         
@@ -108,10 +111,13 @@ class Matrix:
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
             raise TypeError("Cannot add two matrices of different formats.")
-        matrix = [[self.get_entry(i, j) - B.get_entry(i, j) for j in range(1, self.format[1]+1)]
-                  for i in range(1, self.format[0]+1)]
-        return Matrix(matrix)
-    
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        B_cpp = matrix_ops.Matrix(B.matrix)  # Changed from B.format to B.matrix
+        minusB_cpp = matrix_ops.Matrix.scale(B_cpp, -1)
+        C_cpp = matrix_ops.Matrix.sum(A_cpp, minusB_cpp)
+
+        return Matrix(C_cpp.get_matrix())
+        
     def __matmul__(self, B: Self) -> Self:
         """Overloads the @ operator to Matrix objects.
         
@@ -120,9 +126,11 @@ class Matrix:
         Raises an error if the formats of the matrices do not match."""
         if self.format != B.format:
             raise TypeError("Cannot add two matrices of different formats.")
-        matrix = [[self.get_entry(i, j) * B.get_entry(i, j) for j in range(1, self.format[1]+1)]
-                  for i in range(1, self.format[0]+1)]
-        return Matrix(matrix)
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        B_cpp = matrix_ops.Matrix(B.matrix)
+        C_cpp = matrix_ops.Matrix.cwise_prod(A_cpp, B_cpp)
+
+        return Matrix(C_cpp.get_matrix())
     
     def __mul__(self, B: Self) -> Self:
         """Overloads the * operator to Matrix objects.
@@ -132,26 +140,26 @@ class Matrix:
         Raises an error if the number of columns of the first does not match the number of rows of the second."""
         if self.format[1] != B.format[0]:
             raise TypeError(f"Invalid matrix formats ({self.format[1]}≠{B.format[0]}).")
-        matrix = [
-            [
-                LinearAlgebraUtils.dot(self.get_row(i+1), B.get_column(j+1)) for j in range(B.format[1])
-            ] for i in range(self.format[0])
-        ]
-        return Matrix(matrix)
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        B_cpp = matrix_ops.Matrix(B.matrix)
+        C_cpp = matrix_ops.Matrix.product(A_cpp, B_cpp)
+        return Matrix(C_cpp.get_matrix())
     
     def __rmul__(self, scalar: int|float) -> Self:
         """Overloads the * operator to allow multiplication of a Matrix instance by a scalar on the left.
         
         If M is a Matrix instance and c is a scalar, "c * M" returns a matrix instance representing their product."""
-        matrix = [[scalar * self.get_entry(i, j) for j in range(1, self.format[1]+1)]
-                  for i in range(1, self.format[0]+1)]
-        return Matrix(matrix)
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        scaledA_cpp = matrix_ops.Matrix.scale(A_cpp, scalar)
+        return Matrix(scaledA_cpp.get_matrix())
     
     def __truediv__(self, scalar):
         # Add element-wise division by scalar
         if not isinstance(scalar, (int, float)):
             raise TypeError("Can only divide by scalar")
-        return Matrix([[x/scalar for x in row] for row in self.matrix])
+        A_cpp = matrix_ops.Matrix(self.matrix)
+        scaledA_cpp = matrix_ops.Matrix.scale(A_cpp, 1/scalar)
+        return Matrix(scaledA_cpp.get_matrix())
     
     def __eq__(self, B: Self) -> bool:
         """Overloads the == operator."""

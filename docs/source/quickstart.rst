@@ -18,7 +18,11 @@ The output should be:
 
 .. code-block:: bash
 
-    matrix([[-10,3],[-13,4],[-3,2]])
+    matrix([
+            [-10.0, 3.0],
+            [-13.0, 4.0],
+            [-3.0, 2.0]
+    ])
 
 Let us start by the following example: 
 a neural network that picks up on linear patterns
@@ -53,37 +57,69 @@ In your directory, create a python file named
             expected_output_matrix = Matrix([[normalized_next]])
 
             data.append((input_matrix, expected_output_matrix))
-        
+
         random.shuffle(data)
         split_index = int(0.8 * len(data))
         return data[:split_index], data[split_index:]
 
-    train, test = generate_data(500)
+    train, test = generate_data(2000)
 
     #Setting up the neural network.
 
-    nn = MultiLayerPerceptron([5,16,16,1], 'tanh', 'ReLU')
+    nn = MultiLayerPerceptron([5, 16, 16, 1], 'ReLU', 'tanh')
 
     nn.train(train, test, 0.05, 100, True) #Trainin the model.
 
     nn.save("nn_test.json") #Saving the model.
 
+Once you run the script, you will see on your terminal:
+
+.. code-block:: bash
+
+    Epoch 1/100 | Training Loss: 0.000206 | Testing Loss: 0.000271
+    Epoch 2/100 | Training Loss: 0.000138 | Testing Loss: 0.000178
+    Epoch 3/100 | Training Loss: 0.000117 | Testing Loss: 0.000150
+    Epoch 4/100 | Training Loss: 0.000105 | Testing Loss: 0.000131
+    ...
+    Epoch 98/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
+    Epoch 99/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
+    Epoch 100/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
+
 In your directory, you should be able to see 
-a ``nn_test.json`` file and a ``training_history.png``
-photo:
+a new directory called ``cache`` in which you will find a 
+``nn_test.json`` file, a ``training_history.png`` image 
+and a ``training_info.txt`` file.
+
 
 .. image:: training_history.png
 
-We can now create a new python file named ``testing.py``
+.. code-block:: text
+    :name: training_info.txt
+    :caption: Training informations
+
+    Epochs: 100.
+    Learning rate: 0.05.
+    Data size: 2000. Including:
+    
+    Training data size: 1600.
+    Testing data size: 400.
+    
+    Training start date: 2025-08-31 22:27:30.774909.
+    Training end date: 2025-08-31 22:29:19.166712.
+    Trained in: 00 h : 01 m : 48 s : 391 ms.
+    Last train loss: 3.8990712592877146e-05.
+    Last test loss: 5.092510178900183e-05.
+
+We can now create a new python file named ``loading.py``
 in which we will laod the saved model and use it.
 
 .. code-block:: python
-    :name: testing.py
+    :name: loading.py
     :caption: This file loads the model and uses it.
 
     from basic_deep_learning import*
 
-    nn = MultiLayerPerceptron.load("nn_test.json")
+    nn = MultiLayerPerceptron.load("cache/nn_test.json")
 
     def predict_next_term(seq):
         normalized_input = (1/50)*Matrix([seq]).T()
@@ -96,7 +132,7 @@ Output:
 
 .. code-block:: bash
 
-    The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.129617827686102.
+    The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.121602207205266.
 
 While the model is still not accurate, the error is pretty tolerable given the 
 restricted amount of data. Further more, the accuracy could be drastically improved

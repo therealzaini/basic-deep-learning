@@ -65,8 +65,11 @@ class MultiLayerPerceptron:
         error = output_error
         for layer_idx in range(len(self.weights)-2, -1, -1):
             error = (self.weights[layer_idx+1].T() * error) @ self.hidden_activation_function_prime(pre_activations[layer_idx])
+            if error.format[1] != 1:
+                error = error.T()
             grad_b[layer_idx] = error
-            grad_w[layer_idx] = error * activations[layer_idx].T()
+            act_t = activations[layer_idx].T()
+            grad_w[layer_idx] = error * act_t
         for i in range(len(self.weights)):
             self.weights[i] = self.weights[i] - (learning_rate * grad_w[i])
             self.biases[i] = self.biases[i] - (learning_rate * grad_b[i])
