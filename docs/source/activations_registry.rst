@@ -48,7 +48,7 @@ The keys for the activation functions are respectively ``'sigmoid'``, ``'ReLU'``
 ``'linear'`` and ``'tanh'``.
 
 These activation functions can take as parameters integers, floatiing-point values,
-lists and ever ``Matrix`` instances; the return type is the same as the input
+lists and even ``Matrix`` instances; the return type is the same as the input
 where it is computed component-wise for higher order data structures.
 
 .. code-block:: python

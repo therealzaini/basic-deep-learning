@@ -116,6 +116,7 @@ class MultiLayerPerceptron:
         end_date = datetime.now()
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
+        time_per_epoch = elapsed_time/epochs
         with open(f'cache/training_info.txt', 'w') as f:
             f.write(f'Epochs: {epochs}.\n')
             f.write(f'Learning rate: {learning_rate}.\n')
@@ -125,6 +126,7 @@ class MultiLayerPerceptron:
             f.write(f'Training start date: {start_date}.\n')
             f.write(f'Training end date: {end_date}.\n')
             f.write(f'Trained in: {time_format(elapsed_time)}.\n')
+            f.write(f'Average time per epoch: {time_format(time_per_epoch)}/epoch.\n')
             f.write(f'Last train loss: {train_losses[-1]}.\n')
             f.write(f'Last test loss: {test_losses[-1]}.')
         if plot:
