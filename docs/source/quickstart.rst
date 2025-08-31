@@ -107,6 +107,7 @@ and a ``training_info.txt`` file.
     Training start date: 2025-08-31 22:27:30.774909.
     Training end date: 2025-08-31 22:29:19.166712.
     Trained in: 00 h : 01 m : 48 s : 391 ms.
+    Average time per epoch: 00 h : 00 m : 01 s : 083 ms/epoch.
     Last train loss: 3.8990712592877146e-05.
     Last test loss: 5.092510178900183e-05.
 
