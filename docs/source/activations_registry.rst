@@ -70,7 +70,10 @@ where it is computed component-wise for higher order data structures.
 
     0.9640275800758169
     [-0.7615941559557649, 0.0, 0.7615941559557649]
-    matrix([[0.7615941559557649, 0.9640275800758169, 0.9950547536867305], [0.0, 0.7615941559557649, -0.9640275800758169]])
+    matrix([
+            [0.7615941559557649, 0.9640275800758169, 0.9950547536867305],
+            [0.0, 0.7615941559557649, -0.9640275800758169]
+    ])
 
 The registry contains as well the softmax function that turns a 
 column vector into a probability distribution. More formally, 
@@ -94,7 +97,15 @@ For example,
 
 .. code-block:: bash
 
-    matrix([[5.451275599280189e-06], [0.04417214369331117], [0.00806952287485786], [0.00010949179732781423], [0.01625002353723996], [0.04417214369331117], [0.8872212231283527]])
+    matrix([
+            [5.451275599280189e-06],
+            [0.04417214369331117],
+            [0.00806952287485786],
+            [0.00010949179732781423],
+            [0.01625002353723996],
+            [0.04417214369331117],
+            [0.8872212231283527]
+    ])
 
 If the matrix passed is not a column vector *ie* its format can not be written as ``(n,1)``,
-a ``ValueError`` is raised.
+a ``TypeError`` is raised.

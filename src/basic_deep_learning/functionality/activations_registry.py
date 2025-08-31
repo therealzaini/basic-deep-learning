@@ -49,7 +49,7 @@ class ActivationFunctionsRegistry:
     @staticmethod
     def softmax(M: Matrix): #Turns a column vector into a probability distribution.
         if M.format[1] != 1:
-            raise ValueError("Must insert a Matrix instance whose format is that of a column vector.")
+            raise TypeError("Must insert a Matrix instance whose format is that of a column vector.")
         values = M.get_column(1)
         max_val = max(values)
         exponents = [math.exp(v - max_val) for v in values]
