@@ -11,17 +11,34 @@ instances.
     A = Matrix([[1, 2, -4], [2, 0, 1]])
     B = Matrix([[6, -1, 3], [2, 1, 0]])
 
-    print(A + B)  #Addition
-    print(A - B)  #Substraction
-    print(A @ B)  #Component-wise multiplication
-    print(3 * A)  #Scaling
+    print(f"A + B = {A + B}")  #Addition
+    print(f"A - B = {A - B}")  #Substraction
+    print(f"A @ B = {A @ B}")  #Component-wise multiplication
+    print(f"3 * A = {3 * A}") #Scaling
+    print(f"B / 4 = {B / 4}") #Component-wise division
 
 .. code-block:: bash
 
-    matrix([[7, 1, -1], [4, 1, 1]])
-    matrix([[-5, 3, -7], [0, -1, 1]])
-    matrix([[6, -2, -12], [4, 0, 0]])
-    matrix([[3, 6, -12], [6, 0, 3]])
+    A + B = matrix([
+            [7.0, 1.0, -1.0],
+            [4.0, 1.0, 1.0]
+    ])
+    A - B = matrix([
+            [-5.0, 3.0, -7.0],
+            [0.0, -1.0, 1.0]
+    ])
+    A @ B = matrix([
+            [6.0, -2.0, -12.0],
+            [4.0, 0.0, 0.0]
+    ])
+    3 * A = matrix([
+            [3.0, 6.0, -12.0],
+            [6.0, 0.0, 3.0]
+    ])
+    B / 4 = matrix([
+            [1.5, -0.25, 0.75],
+            [0.5, 0.25, 0.0]
+    ])
 
 Performing an addition, substraction or component-wise multiplication
 between two matrices who do not have the same format will raise a ``ValueError``.
@@ -36,17 +53,20 @@ of the second, we can perform matrix multiplication.
     A = Matrix([[1, 2, -4], [2, 0, 1]])
     B = Matrix([[-1, 0, 1, 2], [0, 1, 2, -1], [1, 2, -1, 0]])
 
-    print(A*B)
+    print(A * B)
 
 .. code-block:: bash
 
-    matrix([[-5, -6, 9, 0], [-1, 2, 1, 4]])
+    matrix([
+            [-5.0, -6.0, 9.0, 0.0],
+            [-1.0, 2.0, 1.0, 4.0]
+    ])
 
 But ``print(B*A)`` yields:
 
 .. code-block:: bash
 
-    ValueError: Invalid matrix formats (4≠2).
+    TypeError: Invalid matrix formats (4≠2).
 
 
 Definition:
@@ -64,7 +84,11 @@ matrix.
 
 .. code-block:: bash
 
-    matrix([[1, 2], [2, 0], [-4, 1]])
+    matrix([
+            [1, 2],
+            [2, 0],
+            [-4, 1]
+    ])
 
 Finally, we can use the ``==`` operator between ``Matrix`` 
 instances; ``A == B`` is ``True`` if, and only if 
