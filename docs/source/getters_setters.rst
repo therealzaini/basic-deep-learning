@@ -64,5 +64,27 @@ To modify a certain entry from the matrix, we can use the
 
 .. code-block:: bash
 
-    matrix([[1, 2, 3], [4, -1, 6]])
+    matrix([
+            [1, 2, 3],
+            [4, -1, 6]
+    ])
 
+In all of those methods, if a wrong index is passed, a 
+``IndexError`` will be raised.
+
+.. code-block:: python
+
+    from basic_deep_learning import*
+
+    A = Matrix(
+        [
+            [1, 2, 3],
+            [4, 5, 6]
+        ]
+    )
+
+    print(A.get_entry(3,2))
+
+.. code-block:: bash
+
+    IndexError: Index 3 is out of the expected range [1,2].
