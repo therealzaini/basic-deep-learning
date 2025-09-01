@@ -1,7 +1,7 @@
 Linear Algebra 
 --------------
 
-The package contains a ``LineaAlgebraUtils`` class providing 
+The package contains a ``LinearAlgebraUtils`` class providing 
 some helper functions under the hood.
 
 Definition:
