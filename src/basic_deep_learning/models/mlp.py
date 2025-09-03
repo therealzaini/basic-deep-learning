@@ -10,10 +10,26 @@ import os
 
 def time_format(seconds: float):
     floor_secs = int(seconds)
-    h, s = divmod(floor_secs, 3600)
+    hashing_table = {
+        "h": 0,
+        "m": 0,
+        "s": 0,
+        "ms": 0
+    }
+    hours, s = divmod(floor_secs, 3600)
     m, sec = divmod(s, 60)
-    return f'{h:02d} h : {m:02d} m : {sec:02d} s : {int((seconds-floor_secs)*1000)} ms'
-
+    ms = int((seconds-floor_secs)*1000)
+    hashing_table["h"], hashing_table["m"], hashing_table["s"], hashing_table["ms"] = hours, m, sec, ms
+    while list(hashing_table.values())[0] == 0:
+        del hashing_table[list(hashing_table.keys())[0]]
+    string = ''
+    keys = list(hashing_table.keys())
+    for i, key in enumerate(hashing_table.keys()):
+        if i < len(hashing_table) - 1:
+            string += f'{hashing_table[key]:02d} {key} : '
+        else:
+            string += f'{hashing_table[key]:03d} {key}'
+    return string
 
 class MultiLayerPerceptron:
     def __init__(self,
@@ -94,32 +110,48 @@ class MultiLayerPerceptron:
               testing_data: list[tuple[Matrix, Matrix]],
               learning_rate: float = 0.1,
               epochs: int = 100,
-              plot: bool = False):
+              plot: bool = False,
+              decay_rate: float = 1,
+              loss_float_formating: int = 6,
+              plot_epochs_durations: bool = False):
         """Trains the neural network based on two different categories of data : training and testing.
         Outputs the MSE loss of each. If "True" is passed to the plot parameter,
         a plot of the evolution  of train losses and test losses will be be displayed and saved 
         in your directory."""
         self.__make_dir()
+        format_specifier = f'.{loss_float_formating}f'
+        bar_length = 75
         train_losses = []
         test_losses = []
+        epochs_duration = []
         start_date = datetime.now()
         start_time = time.perf_counter()
         for epoch in range(epochs):
-            current_lr = learning_rate * (0.95 ** epoch)  # Exponential decay
+            current_lr = learning_rate * (decay_rate ** epoch)  # Exponential decay
+            data_progress = 0
+            start_epoch = time.perf_counter()
             for input_vector, expected_output in training_data:
                 self.backward_propagate(input_vector, expected_output, current_lr)
+                data_progress += 1
+                percentage = data_progress/len(training_data)
+                print(f"\rEpoch {epoch+1}/{epochs} : {int(percentage * bar_length) * "█"}{int((1-percentage)*bar_length) * "-"} {percentage*100:.0f}% completed.", end='')
+            end_epoch = time.perf_counter()
+            time_epoch = end_epoch - start_epoch
+            epochs_duration.append(time_epoch)
+            print("\n")
             train_loss = self.get_mse_loss(training_data)
             test_loss = self.get_mse_loss(testing_data)
             train_losses.append(train_loss)
             test_losses.append(test_loss)
-            print(f"Epoch {epoch+1}/{epochs} | Training Loss: {train_loss:.6f} | Testing Loss: {test_loss:.6f}")
+            print(f"Epoch {epoch+1}/{epochs} | Training Loss: {train_loss:{format_specifier}} | Testing Loss: {test_loss:{format_specifier}} ({time_format(time_epoch)})\n")
         end_date = datetime.now()
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
-        time_per_epoch = elapsed_time/epochs
+        time_per_epoch = sum(epochs_duration)/epochs
         with open(f'cache/training_info.txt', 'w') as f:
             f.write(f'Epochs: {epochs}.\n')
             f.write(f'Learning rate: {learning_rate}.\n')
+            f.write(f'Exponential decay rate: {decay_rate}.\n')
             f.write(f'Data size: {len(training_data)+len(testing_data)}. Including:\n \n')
             f.write(f'   Training data size: {len(training_data)}.\n')
             f.write(f'   Testing data size: {len(testing_data)}.\n \n')
@@ -127,8 +159,8 @@ class MultiLayerPerceptron:
             f.write(f'Training end date: {end_date}.\n')
             f.write(f'Trained in: {time_format(elapsed_time)}.\n')
             f.write(f'Average time per epoch: {time_format(time_per_epoch)}/epoch.\n')
-            f.write(f'Last train loss: {train_losses[-1]}.\n')
-            f.write(f'Last test loss: {test_losses[-1]}.')
+            f.write(f'Last training loss: {train_losses[-1]:{loss_float_formating}}.\n')
+            f.write(f'Last testing loss: {test_losses[-1]:{loss_float_formating}}.')
         if plot:
             plt.figure(figsize=(10, 6))
             plt.plot(train_losses, label='Train Loss')
@@ -138,7 +170,17 @@ class MultiLayerPerceptron:
             plt.title('Training History')
             plt.legend()
             plt.grid(True)
-            plt.savefig(f'cache/training_history.png')
+            plt.savefig(f'cache/loss_per_epoch.png')
+            plt.show()
+        if plot_epochs_durations:
+            plt.figure(figsize=(10, 6))
+            plt.plot(epochs_duration)
+            plt.xlabel('Epochs')
+            plt.ylabel('Duration')
+            plt.title('Training History')
+            plt.legend()
+            plt.grid(True)
+            plt.savefig(f'cache/training_time_per_epoch.png')
             plt.show()
         return train_losses, test_losses
     

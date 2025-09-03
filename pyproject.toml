@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "basic-deep-learning"
-version = "0.1.1"
+version = "0.2.0"
 description = "Simple module for creating deep learning tools, with its own linear algebra and matrices utilities."
 readme = "README.md"
 authors = [
