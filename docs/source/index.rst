@@ -1,7 +1,7 @@
 Basic Deep Learning
 ###################
 
-Welcome to the official documentation of Basic Deep Learning version ``0.1.1``.
+Welcome to the official documentation of Basic Deep Learning version ``0.2.4``.
 
 
 .. toctree::
@@ -11,10 +11,5 @@ Welcome to the official documentation of Basic Deep Learning version ``0.1.1``.
    getting_started
    tutorials
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

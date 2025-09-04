@@ -68,7 +68,7 @@ In your directory, create a python file named
 
     nn = MultiLayerPerceptron([5, 16, 16, 1], 'ReLU', 'tanh')
 
-    nn.train(train, test, 0.05, 100, True) #Trainin the model.
+    nn.train(train, test, 0.05, decay_rate=0.96, epochs=100, plot=True, plot_epochs_durations=True) #Trainin the model.
 
     nn.save("nn_test.json") #Saving the model.
 
@@ -76,22 +76,37 @@ Once you run the script, you will see on your terminal:
 
 .. code-block:: bash
 
-    Epoch 1/100 | Training Loss: 0.000206 | Testing Loss: 0.000271
-    Epoch 2/100 | Training Loss: 0.000138 | Testing Loss: 0.000178
-    Epoch 3/100 | Training Loss: 0.000117 | Testing Loss: 0.000150
-    Epoch 4/100 | Training Loss: 0.000105 | Testing Loss: 0.000131
+    Epoch 1/100 : ███████████████████████████████████████████████████████████████████████████ 100% completed.
+
+    Epoch 1/100 | Training Loss: 0.000524 | Testing Loss: 0.000519 (01 s : 505 ms)
+
+    Epoch 2/100 : ███████████████████████████████████████████████████████████████████████████ 100% completed.
+
+    Epoch 2/100 | Training Loss: 0.000291 | Testing Loss: 0.000270 (01 s : 463 ms)
+
+    Epoch 3/100 : ███████████████████████████████████████████████████████████████████████████ 100% completed.
+
+    Epoch 3/100 | Training Loss: 0.000223 | Testing Loss: 0.000194 (01 s : 449 ms)
+
     ...
-    Epoch 98/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
-    Epoch 99/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
-    Epoch 100/100 | Training Loss: 0.000039 | Testing Loss: 0.000051
+
+    Epoch 99/100 : ███████████████████████████████████████████████████████████████████████████ 100% completed.
+
+    Epoch 99/100 | Training Loss: 0.000030 | Testing Loss: 0.000032 (01 s : 523 ms)
+
+    Epoch 100/100 : ███████████████████████████████████████████████████████████████████████████ 100% completed.
+
+    Epoch 100/100 | Training Loss: 0.000030 | Testing Loss: 0.000032 (01 s : 270 ms)
 
 In your directory, you should be able to see 
 a new directory called ``cache`` in which you will find a 
-``nn_test.json`` file, a ``training_history.png`` image 
+``nn_test.json`` file, a ``loss_per_epoch.png`` and a ``training_time_per_epoch.png`` image,
 and a ``training_info.txt`` file.
 
 
-.. image:: training_history.png
+.. image:: loss_per_epoch.png
+
+.. image:: training_time_per_epoch.png
 
 .. code-block:: text
     :name: training_info.txt
@@ -99,17 +114,18 @@ and a ``training_info.txt`` file.
 
     Epochs: 100.
     Learning rate: 0.05.
+    Exponential decay rate: 0.96.
     Data size: 2000. Including:
     
        Training data size: 1600.
        Testing data size: 400.
     
-    Training start date: 2025-08-31 22:27:30.774909.
-    Training end date: 2025-08-31 22:29:19.166712.
-    Trained in: 00 h : 01 m : 48 s : 391 ms.
-    Average time per epoch: 00 h : 00 m : 01 s : 083 ms/epoch.
-    Last train loss: 3.8990712592877146e-05.
-    Last test loss: 5.092510178900183e-05.
+    Training start date: 2025-09-04 18:51:33.782316.
+    Training end date: 2025-09-04 18:54:33.853151.
+    Trained in: 03 m : 00 s : 070 ms.
+    Average time per epoch: 01 s : 434 ms/epoch.
+    Last training loss: 2.9736125346327896e-05.
+    Last testing loss: 3.2130690507638676e-05.
 
 We can now create a new python file named ``loading.py``
 in which we will laod the saved model and use it.
@@ -133,10 +149,10 @@ Output:
 
 .. code-block:: bash
 
-    The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.121602207205266.
+    The model predicts that the next term of the sequence [1, 2, 3, 4, 5] is 6.095201928726749.
 
 While the model is still not accurate, the error is pretty tolerable given the 
-restricted amount of data. Further more, the accuracy could be drastically improved
+restricted amount of data and the size of the network. Further more, the accuracy could be drastically improved
 by increasing the number of hidden layers, the neurons and epochs.
-At last, the learning rate can be tweaked for faster convergence as well.
+At last, the learning and decay rates can be tweaked for faster convergence as well.
 
