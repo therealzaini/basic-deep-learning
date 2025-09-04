@@ -1,8 +1,7 @@
 """Module containing the Matrix class."""
 from typing import Self
 import random
-from ..miscellaneous.linear_algebra import LinearAlgebraUtils
-from . import matrix_ops
+import matrix_ops
 
 class Matrix:
     def __init__(self,

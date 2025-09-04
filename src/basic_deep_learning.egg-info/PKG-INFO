@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: basic-deep-learning
-Version: 0.2.0
+Version: 0.2.4
 Summary: Simple module for creating deep learning tools, with its own linear algebra and matrices utilities.
 Author-email: Diaa Eddine ZAINI <zainidiaaeddine@gmail.com>
 License: Copyright (c) 2025 Diaa Eddine ZAINI
