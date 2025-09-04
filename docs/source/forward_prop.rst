@@ -33,5 +33,5 @@ meaning the :math:`Z^{(i)}` column vectors (:math:`1\leq i \leq L`) where:
 
 .. math::
 
-    \forall i \in [1, L], \quad Z^{(i)} = W^{(i)}\cdot A^{(i-1)} + B^{(i)}\right,
+    \forall i \in [1, L], \quad Z^{(i)} = W^{(i)}\cdot A^{(i-1)} + B^{(i)}.
 
