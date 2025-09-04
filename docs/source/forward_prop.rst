@@ -16,8 +16,22 @@ based on the input vector :math:`A^{(0)}=X` via the recursive formula:
 
 .. math::
 
-    \forall n \in [1, L], \quad A^{(n)} = f\left(W^{(n)}\cdot A^{(n-1)} + B^{(n)}\right)
+    \forall i \in [1, L], \quad A^{(i)} = f\left(W^{(i)}\cdot A^{(i-1)} + B^{(i)}\right),
+
+where :math:`f` is the hidden layers activation function if :math:`i < L` and 
+is the output layer activation function if :math:`i = L`.
+The output is hence the last column matrix :math:`A^{(L)}`.
 
 The method returns a tuple ``(output_vector, (activations, pre_activations))``.
 
-``output_vector`` is self explanatory: the output of the MLP based on the input.
+``output_vector`` is self explanatory: the :math:`A^{(L)}` vector as a ``Matrix`` instance.
+
+``activations``: the list of the :math:`A^{(i)}` column vectors.
+
+``pre_activations``: the list of the :math:`A^{(i)}` vectors before evaluating the activation function,
+meaning the :math:`Z^{(i)}` column vectors (:math:`1\leq i \leq L`) where:
+
+.. math::
+
+    \forall i \in [1, L], \quad Z^{(i)} = W^{(i)}\cdot A^{(i-1)} + B^{(i)}\right,
+
